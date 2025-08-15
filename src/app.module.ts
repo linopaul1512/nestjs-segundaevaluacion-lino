@@ -6,10 +6,29 @@ import { LoggerModule } from './logger/logger.module';
 import { UsersModule } from './users/users.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { LoggerService } from './logger/logger.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [AuthModule, LoggerModule, UsuariosModule, UsersModule],
+ imports: [UsersModule,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: '1234',
+      database: 'inventario',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true, // solo en desarrollo
+    }),
+    LoggerModule,
+    AuthModule,
+    UsersModule,
+    UsuariosModule
+  ],
   controllers: [AppController],
-  providers: [AppService, LoggerService],
+  providers: [AppService],
 })
 export class AppModule {}
+
+
+
